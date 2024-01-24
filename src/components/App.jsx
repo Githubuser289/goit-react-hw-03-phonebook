@@ -5,11 +5,25 @@ import ContactList from './ContactList';
 import { nanoid } from 'nanoid';
 import styles from './App.module.css';
 
+const STORAGE_KEY = 'phonebook';
+
 class App extends Component {
   state = {
     contacts: [],
     filter: '',
   };
+
+  componentDidMount() {
+    const data = localStorage.getItem(STORAGE_KEY);
+    if (data) {
+      this.setState({ contacts: JSON.parse(data) });
+    }
+  }
+
+  componentDidUpdate() {
+    let contacts = this.state.contacts;
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(contacts));
+  }
 
   deleteContact = evt => {
     let idToDel = evt.target.id;
